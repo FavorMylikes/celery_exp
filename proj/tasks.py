@@ -8,7 +8,8 @@ from celery import Celery
 app = Celery('tasks',
              broker='pyamqp://guest:favormylikes@192.168.3.2:5672//',
              backend='rpc://',
-             include=['proj.tasks'])
+             include=['proj.tasks']
+             )
 app.conf.update(
     result_expires=3600,
 )
