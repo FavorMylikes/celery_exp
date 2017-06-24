@@ -4,7 +4,7 @@
 # @since : 2017/6/19 23:49
 from __future__ import absolute_import, unicode_literals
 from proj import app
-
+import math
 # app = Celery('tasks',
 #              broker='pyamqp://guest:favormylikes@192.168.3.2:5672//',
 #              backend='rpc://',
@@ -15,6 +15,25 @@ from proj import app
 @app.task
 def add(x, y):
     return x+y
+
+@app.task
+def modf(x):
+#@return (小数部分，整数部分)
+    return math.modf(x)
+
+@app.task
+def div(*data):
+    x,y=data
+    try:
+        return x/y
+    except ZeroDivisionError as e:
+        return 0
+    
+@app.task
+def log(*data):
+    x,b=(data+(math.e,))[:2]
+    return math.log(x,b)
+
 
 @app.task
 def inc(x):
@@ -29,5 +48,6 @@ if __name__ == '__main__':
     # multi restart w1 -A proj -l info
     # 'multi','start','3','--pool=gevent'
     #
-    # app.start(argv=['tasks','multi','start','w1','--loglevel=info'])
-    app.start(argv=['tasks', 'worker', '--loglevel=info'])
+    # app.start(argv=['tasks','multi','start','w2','--loglevel=info'])
+    app.start(argv=['tasks','multi','stop','w1','--loglevel=info'])
+    # app.start(argv=['tasks', 'worker', '--loglevel=info'])
