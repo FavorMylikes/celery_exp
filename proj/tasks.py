@@ -22,7 +22,7 @@ def modf(x):
     return math.modf(x)
 
 @app.task
-def div(*data):
+def div(data):
     x,y=data
     try:
         return x/y
@@ -30,9 +30,8 @@ def div(*data):
         return 0
     
 @app.task
-def log(*data):
-    x,b=(data+(math.e,))[:2]
-    return math.log(x,b)
+def log(x,base=math.e):
+    return math.log(x,base)
 
 
 @app.task
