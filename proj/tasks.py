@@ -36,9 +36,9 @@ def log(x,base=math.e):
 
 @app.task
 def inc(x):
+    x += 1
     if x<10:
         inc.delay(x)
-        x += 1
         return x
     else:
         return x
@@ -48,5 +48,7 @@ if __name__ == '__main__':
     # 'multi','start','3','--pool=gevent'
     #
     # app.start(argv=['tasks','multi','start','w2','--loglevel=info'])
-    app.start(argv=['tasks','multi','stop','w1','--loglevel=info'])
+    # app.start(argv=['tasks','multi','stop','w1','--loglevel=info'])
     # app.start(argv=['tasks', 'worker', '--loglevel=info'])
+    # 打印配置
+    print(app.conf.humanize(with_defaults=False, censored=True))

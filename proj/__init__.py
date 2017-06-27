@@ -5,6 +5,7 @@
 from celery import Celery
 app = Celery('proj')                                # 创建 Celery 实例
 app.config_from_object('proj.celeryconfig')   # 通过 Celery 实例加载配置模块
-app.conf.update(
-    result_expires=3600,
-)
+#可以通过该方法更新配置，不过我想把这些主要配置都写在celeryconfig.py模块里
+# app.conf.update(
+#     result_expires=3600,
+# )

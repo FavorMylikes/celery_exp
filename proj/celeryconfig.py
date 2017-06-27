@@ -8,7 +8,9 @@ CELERY_IMPORTS = (                                  # 指定导入的任务模�
     'proj.tasks'
 )
 #路由配置，对应的任务会被push到对应的队列中，同时，任务也只接受对应的任务消息，不会接受到其他队列的消息
-CELERY_ROUTES={'proj.tasks.add': {'queue': 'queue_add'},
-          'proj.tasks.div': {'queue': 'queue_div'},
-          'proj.tasks.log': {'queue': 'queue_log'},
-          'proj.tasks.modf': {'queue': 'queue_modf'}}
+# CELERY_ROUTES={'proj.tasks.add': {'queue': 'queue_add'},
+#           'proj.tasks.div': {'queue': 'queue_div'},
+#           'proj.tasks.log': {'queue': 'queue_log'},
+#           'proj.tasks.modf': {'queue': 'queue_modf'}}
+#过期时间
+CELERY_TASK_RESULT_EXPIRES=3600
