@@ -1,6 +1,6 @@
-###Celery Demo
-
-####rabbitmqadmin usage
+Celery Demo
+===================
+###rabbitmqadmin usage
     
     -u \<username> -p \<passwrod>
 or you can use long arguements like
