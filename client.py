@@ -1,6 +1,4 @@
 # from proj.tasks import inc
-from proj.tasks import add
+from proj.tasks import *
 import time
-for i in range(100):
-    res=add.signature((i,1),queue='queue_add').delay()
-    time.sleep(1)
+inc.s(8).delay().get()
