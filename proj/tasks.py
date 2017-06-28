@@ -13,14 +13,18 @@ import math
 #              )
 
 logger = get_task_logger(__name__)
+
 #bind之后就可以使用self参数表示task自身
 @app.task(bind=True)
-def add(self,x, y):
+def retry(self,x):
     logger.info("retries {0.retries}".format(self.request))
     if self.request.retries<3:
         # default_retry_delay=3*60 180s
         # max_retries = 3
         raise self.retry(countdown=0)
+
+@app.task
+def add(x, y):
     return x+y
 #autoretry_for 发现异常自动retry,最大retry为5
 @app.task(autoretry_for=(Exception,),
@@ -41,7 +45,8 @@ def div(data):
 def log(x,base=math.e):
     return math.log(x,base)
 
-
+#ignore_result设置为True时
+# get的时候会导致阻塞，且永远不会继续，status_code将永远是pending
 @app.task
 def inc(x):
     x += 1
@@ -50,6 +55,22 @@ def inc(x):
         return x
     else:
         return x
+
+#下面的任务是用来确定exchange的作用
+@app.task(ignore_result=True)
+def send_email(message):
+    logger.info("Message sended:\n%s" % message)
+
+
+@app.task(ignore_result=True)
+def save_db(message):
+    logger.info("Message save database:\n%s" % message)
+
+
+@app.task(ignore_result=True)
+def save_redis(message):
+    logger.info("Message save redis:\n%s" % message)
+
 if __name__ == '__main__':
     #--pool could be 'eventlet' or 'gevent'
     # multi restart w1 -A proj -l info
