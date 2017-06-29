@@ -11,7 +11,8 @@ class BaseItem(dict):
 
     def __new__(cls):
         fields = {}
-        for v in dir(cls):
+        for n in dir(cls):
+            v = getattr(cls, n)
             if isinstance(v,Field):
-                fields[v]=""
+                fields[n]=""
         return dict(**fields)
