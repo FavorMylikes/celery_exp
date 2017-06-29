@@ -4,12 +4,14 @@
 # @since : 2017/6/19 23:49
 from __future__ import absolute_import, unicode_literals
 from celery.utils.log import get_task_logger
-from proj import app
+from demo import app
+from datetime import datetime
 import math
+
 # app = Celery('tasks',
 #              broker='pyamqp://guest:favormylikes@192.168.3.2:5672//',
 #              backend='rpc://',
-#              include=['proj.tasks']
+#              include=['demo.tasks']
 #              )
 
 logger = get_task_logger(__name__)
@@ -57,23 +59,32 @@ def inc(x):
         return x
 
 #下面的任务是用来确定exchange的作用
-@app.task(ignore_result=True)
+@app.task
 def send_email(message):
     logger.info("Message sended:\n%s" % message)
 
 
-@app.task(ignore_result=True)
+@app.task
 def save_db(message):
     logger.info("Message save database:\n%s" % message)
 
 
-@app.task(ignore_result=True)
+@app.task
 def save_redis(message):
     logger.info("Message save redis:\n%s" % message)
 
+@app.task
+def default_task(data):
+    #不在celery_route中设置路由,会被push到Queue("default")中
+    logger.info("default task:\n%s" % data)
+
+@app.task(ignore_result=True)
+def tick(time):
+    #定时任务
+    logger.warn("push at %s\tstart at %s" % (time,datetime.now().strftime("%x %X")))
 if __name__ == '__main__':
     #--pool could be 'eventlet' or 'gevent'
-    # multi restart w1 -A proj -l info
+    # multi restart w1 -A demo -l info
     # 'multi','start','3','--pool=gevent'
     #
     # app.start(argv=['tasks','multi','start','w2','--loglevel=info'])
