@@ -5,12 +5,12 @@
 
 from __future__ import absolute_import, unicode_literals
 from celery.utils.log import get_task_logger
+from celery import group
 from spider import app
 from datetime import datetime
 from lxml import etree
 from spider.items import TopicItem
 import requests,math
-from celery.utils.log import get_task_logger
 logger = get_task_logger(__name__)
 
 @app.task
@@ -19,6 +19,7 @@ def fresh():
     url+="?start=0"
     content=requests.get(url, proxies={'http': 'socks5://127.0.0.1:1080'}).content
     tree=etree.HTML(content)
+    items=[]
     for tr in tree.xpath('//*[@id="content"]/div/div[1]/div[2]/table/tr')[2:]:
         item = TopicItem()
         item["title"] = tr.xpath("td[1]/a")[0].attrib["title"]
@@ -29,7 +30,9 @@ def fresh():
         if len(item["lasttime"]) == 11:
             item["lasttime"] = str(datetime.now().year) + '-' + item["lasttime"]
         logger.debug(item["url"])
-        save_topic.delay(item)
+        items.append(item)
+    group(save_topic.s(i) for i in items)()
+        # save_topic.delay(item)
         # yield Request(item["url"], callback=self.topic_detail_handler, meta={"topicItem": item})
 
 @app.task
