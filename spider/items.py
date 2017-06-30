@@ -4,7 +4,8 @@
 # @since : 17-6-29 下午7:41
 from spider.base import Field,BaseItem
 
-class topicItem(BaseItem):
+class TopicItem(BaseItem):
+    title = Field()
     author = Field()
     content = Field()
     comment_count = Field()
@@ -18,4 +19,4 @@ class topicItem(BaseItem):
     content_hash = Field()
     key = Field()
 if __name__ == '__main__':
-    print(topicItem())
+    print(TopicItem())

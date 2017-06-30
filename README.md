@@ -19,7 +19,12 @@ user guest is for default so you can omit it
 ### worker start args
 
 
-`celery -A tasks worker --loglevel=info  --app=proj -Q queue_add,queue_div,queue_log,queue_modf`
+`celery -A tasks worker --loglevel=info  --app=demo -Q queue_add,queue_div,queue_log,queue_modf`
 
 if add the `-Q` arguement, celery will start queues that you specify.In above example is `queue_add,queue_div,queue_log,queue_modf`
 , so if you put same other task to default, it will not be invoked.
+
+`celery -B -A tasks worker --loglevel=info  --app=spider --hostname=001@%h  -Q fresh,save_topic,default --schedule=spider/celrybeat-schedule
+`
+
+start with beat schedule
