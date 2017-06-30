@@ -13,13 +13,11 @@ from spider.items import TopicItem
 import requests,math
 logger = get_task_logger(__name__)
 
-@app.task
-def fresh():
-    url="https://www.douban.com/group/beijingzufang/discussion"
-    url+="?start=0"
-    content=requests.get(url, proxies={'http': 'socks5://127.0.0.1:1080'}).content
-    tree=etree.HTML(content)
-    items=[]
+def _fresh():
+    url = "https://www.douban.com/group/beijingzufang/discussion"
+    url += "?start=0"
+    content = requests.get(url, proxies={'http': 'socks5://127.0.0.1:1080'}).content
+    tree = etree.HTML(content)
     for tr in tree.xpath('//*[@id="content"]/div/div[1]/div[2]/table/tr')[2:]:
         item = TopicItem()
         item["title"] = tr.xpath("td[1]/a")[0].attrib["title"]
@@ -30,8 +28,12 @@ def fresh():
         if len(item["lasttime"]) == 11:
             item["lasttime"] = str(datetime.now().year) + '-' + item["lasttime"]
         logger.debug(item["url"])
-        items.append(item)
-    group(save_topic.s(i) for i in items)()
+        yield save_topic.s(item)
+
+@app.task
+def fresh():
+
+    group(_fresh())()
         # save_topic.delay(item)
         # yield Request(item["url"], callback=self.topic_detail_handler, meta={"topicItem": item})
 
