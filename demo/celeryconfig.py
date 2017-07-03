@@ -4,8 +4,8 @@ from celery.schedules import crontab,timedelta
 from datetime import datetime
 BROKER_URL='pyamqp://favoruser:favormylikes@192.168.3.2:5672//'
 ##NotImplementedError: The "rpc" result backend does not support chords!
-#CELERY_RESULT_BACKEND = 'rpc://'#using rpc for backend result
-CELERY_RESULT_BACKEND = 'amqp://favoruser:favormylikes@192.168.3.2:5672//'
+CELERY_RESULT_BACKEND = 'rpc://'#using rpc for backend result
+# CELERY_RESULT_BACKEND = 'amqp://favoruser:favormylikes@192.168.3.2:5672//'
 CELERY_TIMEZONE='Asia/Shanghai'
 CELERY_IMPORTS = (                                  # 指定导入的任务模块
     'demo.tasks'
@@ -53,3 +53,6 @@ CELERYBEAT_SCHEDULE = {
         'args': (datetime.now().strftime("%x %X"),) ,
     }
 }
+
+#加载器，详见Celery.app.base
+CELERY_LOADER='common.loaders.app:ProxyLoader'

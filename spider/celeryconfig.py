@@ -40,3 +40,4 @@ CELERYBEAT_SCHEDULE = {
         # 'args': (datetime.now().strftime("%x %X"),) ,
     }
 }
+

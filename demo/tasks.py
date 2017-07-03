@@ -90,5 +90,14 @@ if __name__ == '__main__':
     # app.start(argv=['tasks','multi','start','w2','--loglevel=info'])
     # app.start(argv=['tasks','multi','stop','w1','--loglevel=info'])
     # app.start(argv=['tasks', 'worker', '--loglevel=info'])
+
+    argv = "tasks worker " \
+           "--loglevel=info " \
+           "--app=demo " \
+           "--hostname=001@%h " \
+           "--queues queue_add,queue_div".split(" ")
+    app.start(argv=argv)
+
+
     # 打印配置
-    print(app.conf.humanize(with_defaults=False, censored=True))
+    # print(app.conf.humanize(with_defaults=False, censored=True))
