@@ -28,3 +28,8 @@ if add the `-Q` arguement, celery will start queues that you specify.In above ex
 `
 
 start with beat schedule
+
+if this message `warning: Debugger speedups using cython not found`  show up begin of console,maybe you need run below command to build
+
+`"/usr/bin/python3.5" "/home/mylikes/Downloads/pycharm-2017.1.3/helpers/pydev/setup_cython.py" build_ext --inplace`
+

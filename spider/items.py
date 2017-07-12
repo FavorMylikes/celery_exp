@@ -2,7 +2,7 @@
 # @desc Created by FavorTGD.
 # @author : FavorMylikes<l786112323@gmail.com>
 # @since : 17-6-29 下午7:41
-from spider.base import Field,BaseItem
+from common.base import Field,BaseItem
 
 class TopicItem(BaseItem):
     title = Field()

@@ -22,19 +22,25 @@ CELERY_IMPORTS = (                                  # 指定导入的任务模�
 #过期时间
 CELERY_TASK_RESULT_EXPIRES=3600
 #默认队列
-CELERY_DEFAULT_QUEUE = "default"
+# CELERY_DEFAULT_QUEUE = "default"
 
 CELERY_ROUTES={'spider.tasks.fresh': {'queue': 'fresh'},
-               'spider.tasks.save_topic': {'queue': 'save_topic'},}
+               'spider.tasks.save_topic': {'queue': 'save_topic'},
+               'spider.tasks.get_proxy': {'queue': 'get_proxy'},
+               'spider.tasks.list_handler': {'queue': 'list_handler'},
+               'spider.tasks.get_content': {'queue': 'get_content'},}
 
 CELERY_QUEUES = (
     Queue('fresh',routing_key="fresh"),
     Queue('save_topic',routing_key="save_topic"),
-    Queue('default'),
+    Queue('get_proxy', routing_key="get_proxy"),
+    Queue('list_handler', routing_key="list_handler"),
+    Queue('get_content', routing_key="get_content"),
+    # Queue('default'),
 )
 
 CELERYBEAT_SCHEDULE = {
-    'send-email-every-5-minute': {    # 定时任务的名字
+    'send-email-every-50-second': {    # 定时任务的名字
         'task': 'spider.tasks.fresh',     # 具体对应的Task
         'schedule':  timedelta(seconds=50),# 定时设置，这里表示30s执行一次
         # 'args': (datetime.now().strftime("%x %X"),) ,

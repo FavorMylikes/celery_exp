@@ -27,6 +27,7 @@ def retry(self,x):
 
 @app.task
 def add(x, y):
+    logger.info("%s+%s" %(x,y))
     return x+y
 #autoretry_for 发现异常自动retry,最大retry为5
 @app.task(autoretry_for=(Exception,),
@@ -94,8 +95,8 @@ if __name__ == '__main__':
     argv = "tasks worker " \
            "--loglevel=info " \
            "--app=demo " \
-           "--hostname=001@%h " \
-           "--queues queue_add,queue_div".split(" ")
+           "--hostname=002@%h " \
+           "--queues queue_add,queue_div,default".split(" ")
     app.start(argv=argv)
 
 
