@@ -3,7 +3,9 @@
 # @author : FavorMylikes<l786112323@gmail.com>
 # @since : 17-6-29 下午7:51
 
-# incomplete
+from sqlalchemy.ext.declarative import declarative_base
+# 创建对象的基类:
+BaseModel = declarative_base()
 class Field():
     pass
 
