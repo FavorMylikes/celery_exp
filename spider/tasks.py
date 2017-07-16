@@ -13,6 +13,10 @@ from spider.items import Topic
 from common.connect.redis_client import conn_redis
 import requests,math
 
+from sys import path
+from os.path import join,dirname
+path.append(join(dirname(__file__), '..'))
+
 logger = get_task_logger(__name__)
 r_cli=conn_redis()
 
@@ -77,9 +81,6 @@ def save_topic(topic_item):
 
 
 def main():
-    from sys import path
-    from os.path import join,dirname
-    path.append(join(dirname(__file__), '..'))
     print("worker starting ")
     argv = "tasks worker " \
            "--beat " \
