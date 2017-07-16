@@ -11,7 +11,6 @@ from datetime import datetime
 from lxml import etree
 from spider.items import Topic
 from common.connect.redis_client import conn_redis
-from sys import path
 import requests,math
 
 logger = get_task_logger(__name__)
@@ -78,6 +77,9 @@ def save_topic(topic_item):
 
 
 def main():
+    from sys import path
+    from os.path import join,dirname
+    path.append(join(dirname(__file__), '..'))
     print("worker starting ")
     argv = "tasks worker " \
            "--beat " \
