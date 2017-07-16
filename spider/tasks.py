@@ -82,7 +82,7 @@ def main():
     argv = "tasks worker " \
            "--beat " \
            "--loglevel=info " \
-           "--logfile=spider/log/%n%I.log"\
+           "--logfile=spider/log/%n%I.log "\
            "--app=spider " \
            "--hostname=001@%h " \
            "--queues fresh,save_topic,get_proxy,list_handler,get_content " \
