@@ -73,6 +73,7 @@ def save_topic(topic_item):
     logger.info(topic_item)
 
 def main():
+    print("worker starting ")
     argv = "tasks worker " \
            "--beat " \
            "--loglevel=info " \
@@ -81,6 +82,7 @@ def main():
            "--queues fresh,save_topic,get_proxy,list_handler,get_content " \
            "--schedule=celrybeat-schedule".split(" ")
     app.start(argv=argv)
+    print("worker started")
 
 if __name__ == '__main__':
     # app.worker_main(argv="--loglevel=info  --app=spider --hostname=001@%h  -Q fresh,save_topic,default --schedule=spider/celrybeat-schedule".split(" "))
