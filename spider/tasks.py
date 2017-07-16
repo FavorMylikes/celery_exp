@@ -11,6 +11,7 @@ from datetime import datetime
 from lxml import etree
 from spider.items import Topic
 from common.connect.redis_client import conn_redis
+from sys import path
 import requests,math
 
 logger = get_task_logger(__name__)
@@ -42,9 +43,11 @@ def fresh():
         # save_topic.delay(item)
         # yield Request(item["url"], callback=self.topic_detail_handler, meta={"topicItem": item})
 
+
 @app.task
 def get_content(proxy,url):
     return requests.get(url, proxies={'http': proxy}).content.decode()
+
 
 @app.task
 def get_proxy():
@@ -68,15 +71,18 @@ def list_handler(content):
         sign.append(item)
     group(*sign)()
 
+
 @app.task
 def save_topic(topic_item):
     logger.info(topic_item)
+
 
 def main():
     print("worker starting ")
     argv = "tasks worker " \
            "--beat " \
            "--loglevel=info " \
+           "--logfile=spider/log/%n%I.log"\
            "--app=spider " \
            "--hostname=001@%h " \
            "--queues fresh,save_topic,get_proxy,list_handler,get_content " \
