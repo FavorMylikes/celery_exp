@@ -4,6 +4,9 @@
 # @since : 17-6-29 下午7:23
 
 from __future__ import absolute_import, unicode_literals
+from sys import path
+from os.path import join,dirname
+path.append(join(dirname(__file__), '..'))
 from celery.utils.log import get_task_logger
 from celery import group,chain
 from spider import app
@@ -12,10 +15,6 @@ from lxml import etree
 from spider.items import Topic
 from common.connect.redis_client import conn_redis
 import requests,math
-
-from sys import path
-from os.path import join,dirname
-path.append(join(dirname(__file__), '..'))
 
 logger = get_task_logger(__name__)
 r_cli=conn_redis()
