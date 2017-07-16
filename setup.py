@@ -17,6 +17,7 @@ setup(name='funniest',
           'pymysql',
           'redis',
           'lxml',
-          'requests'
+          'requests',
+          # 'alembic'
       ],
       zip_safe=False)

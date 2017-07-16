@@ -18,3 +18,18 @@ class BaseItem(dict):
             if isinstance(v,Field):
                 fields[n]=""
         return dict(**fields)
+if __name__ == '__main__':
+    class TopicItem(BaseItem):
+        title = Field()
+        author = Field()
+        content = Field()
+        comment_count = Field()
+        comment_id_count = Field()
+        comment_time_var = Field()
+        comment_distinct_count = Field()
+        createtime = Field()
+        releasetime = Field()
+        lasttime = Field()
+        url = Field()
+        content_hash = Field()
+        key = Field()

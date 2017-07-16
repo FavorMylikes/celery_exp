@@ -9,7 +9,7 @@ from celery import group,chain
 from spider import app
 from datetime import datetime
 from lxml import etree
-from spider.items import TopicItem
+from spider.items import Topic
 from common.connect.redis_client import conn_redis
 import requests,math
 
@@ -53,20 +53,20 @@ def get_proxy():
 
 @app.task
 def list_handler(content):
-    def _topic_generator():
-        tree = etree.HTML(content.encode())
-        for tr in tree.xpath('//*[@id="content"]/div/div[1]/div[2]/table/tr')[2:]:
-            item = TopicItem()
-            item["title"] = tr.xpath("td[1]/a")[0].attrib["title"]
-            item["url"] = tr.xpath("td[1]/a")[0].attrib["href"]
-            item["author"] = tr.xpath("td[2]/a/text()")[0].strip()
-            item["comment_count"] = (tr.xpath("td[3]/text()") + ["0"])[0].strip()
-            item["lasttime"] = tr.xpath("td[4]/text()")[0].strip()
-            if len(item["lasttime"]) == 11:
-                item["lasttime"] = str(datetime.now().year) + '-' + item["lasttime"]
-            logger.debug(item["url"])
-            yield save_topic.s(item)
-    group(_topic_generator())()
+    sign=[]
+    tree = etree.HTML(content.encode())
+    for tr in tree.xpath('//*[@id="content"]/div/div[1]/div[2]/table/tr')[2:]:
+        item = Topic()
+        item.title = tr.xpath("td[1]/a")[0].attrib["title"]
+        item.url = tr.xpath("td[1]/a")[0].attrib["href"]
+        item.author = tr.xpath("td[2]/a/text()")[0].strip()
+        item.comment_count = (tr.xpath("td[3]/text()") + ["0"])[0].strip()
+        item.lasttime = tr.xpath("td[4]/text()")[0].strip()
+        if len(item["lasttime"]) == 11:
+            item["lasttime"] = str(datetime.now().year) + '-' + item["lasttime"]
+        logger.debug(item["url"])
+        sign.append(item)
+    group(*sign)()
 
 @app.task
 def save_topic(topic_item):
