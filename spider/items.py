@@ -3,7 +3,6 @@
 # @author : FavorMylikes<l786112323@gmail.com>
 # @since : 17-6-29 下午7:41
 from common.base import Field,BaseItem,BaseModel
-from common.connect.mysql_client import Base
 from sqlalchemy import Column, String, Integer,Text,Float,DateTime,BigInteger,ForeignKey
 from sqlalchemy.dialects.mysql import DOUBLE
 from datetime import datetime
