@@ -62,5 +62,8 @@ if __name__ == '__main__':
     topic.title="title"
     topic.author="author"
     topic.content="content"
-    session.add(topic)
-    session.commit()
+    string = topic.serialize()
+    top = Topic.deserialize(string)
+    print(top)
+    # session.add(topic)
+    # session.commit()

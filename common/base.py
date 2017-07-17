@@ -4,11 +4,11 @@
 # @since : 17-6-29 下午7:51
 
 from sqlalchemy.ext.declarative import declarative_base as real_declarative_base
-
+from sqlalchemy.ext.serializer import loads, dumps
+from typing import TypeVar, Type
 __all__ = ['BaseModel']
 declarative_base = lambda cls: real_declarative_base(cls=cls)
-
-
+T = TypeVar("T", bound='BaseModel')
 # 为继承的子类添加一些有用的方法，不能使用继承自base是因为，继承类必须要有__table__的值
 @declarative_base
 class BaseModel(object):
@@ -32,6 +32,12 @@ class BaseModel(object):
     def as_dict(self):
         return dict((column.name, str(getattr(self, column.name))) for column in self.__table__.columns)
 
+    def serialize(self) ->str:
+        return dumps(self).decode()
+
+    @classmethod
+    def deserialize(cls: Type[T], string: str)-> T:
+        return loads(string.encode())
 
 class Field():
     pass
@@ -48,31 +54,6 @@ class BaseItem(dict):
 
 
 if __name__ == '__main__':
-    from sqlalchemy import Column, String, Integer, Text, Float, DateTime, BigInteger, ForeignKey
-    from common.connect.mysql_client import session_mysql
-    # 定义User对象:
-    class User(BaseModel):
-        # 表的名字:
-        __tablename__ = 'test'
-
-        # 表的结构:
-        id = Column(Integer, primary_key=True, autoincrement=True)
-        user = Column(String(20), default="hh")
-
-
-    import logging
-
-    logging.basicConfig()
-    logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-
-    user = User()
-    session = session_mysql()
-    print(type(session))
-    session.add(user)
-    session.commit()
-    print(user.id)
-    user = session.query(User).filter(User.id == '5').one()
-    print("{0.id},{0.user}".format(user))
 
     class TopicItem(BaseItem):
         title = Field()

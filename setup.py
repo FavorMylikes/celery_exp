@@ -13,6 +13,7 @@ setup(name='funniest',
       license='MIT',
       packages=['funniest'],
       install_requires=[
+          'celery',
           'sqlalchemy',
           'pymysql',
           'redis',
